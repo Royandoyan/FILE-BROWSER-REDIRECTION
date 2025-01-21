@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     currentUserUid = userCredential.user.uid;
 
                     statusIcon.className = 'fa fa-check';
-                    setTimeout(() => window.location.href = "HTML/home.html", 500);
+                    setTimeout(() => window.location.href = "home.html", 500);
                 })
                 .catch((error) => {
                     loginStatus.textContent = 'Login failed. Please check your Email and Password or Sign Up.';
