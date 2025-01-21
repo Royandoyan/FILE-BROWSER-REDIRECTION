@@ -240,14 +240,14 @@ async function deleteFile(fileId) {
     }
 }
 
-
-
-
 const fileInput = document.getElementById('fileUpload');
 
 fileInput.addEventListener('change', async (event) => {
     const file = event.target.files[0];
-    if (!file) return;
+    if (!file) {
+        console.error("No file selected.");
+        return;
+    }
 
     const formData = new FormData();
     formData.append('file', file);
@@ -258,6 +258,13 @@ fileInput.addEventListener('change', async (event) => {
 
     if (!currentUserUid) {
         console.error("User is not authenticated. Cannot upload file.");
+        alert('You must be logged in to upload files.');
+        return;
+    }
+
+    if (!parentId) {
+        console.error("Parent ID is not set.");
+        alert('Parent folder is not specified.');
         return;
     }
 
@@ -265,17 +272,19 @@ fileInput.addEventListener('change', async (event) => {
     formData.append('parent_id', parentId);
 
     try {
+        // Upload the file to the server
         const response = await fetch('https://file-browser-redirection.onrender.com/upload', {
             method: 'POST',
             body: formData,
         });
 
         const result = await response.json();
+
         if (response.ok) {
-            // Proceed with Firestore write operation to save metadata
+            // Proceed with saving metadata to Firestore
             const fileMetadata = {
                 name: file.name,
-                url: result.fileUrl,
+                url: result.fileUrl, // Assuming the server returns a file URL
                 user_id: currentUserUid,
                 parent_id: parentId,
                 created_at: serverTimestamp() // Add timestamp
@@ -283,9 +292,14 @@ fileInput.addEventListener('change', async (event) => {
 
             // Ensure the user is authenticated before saving metadata to Firestore
             if (currentUserUid) {
+                // Firestore reference to the 'files' collection
                 const fileRef = collection(db, "files");
+
+                // Add the file metadata to Firestore
                 await addDoc(fileRef, fileMetadata);
-                alert(`File uploaded and metadata saved successfully: ${result.fileUrl}`);
+
+                console.log(`File uploaded and metadata saved: ${result.fileUrl}`);
+                alert(`File uploaded successfully: ${result.fileUrl}`);
             }
 
         } else {
@@ -294,6 +308,6 @@ fileInput.addEventListener('change', async (event) => {
         }
     } catch (error) {
         console.error('Error during upload:', error);
-        alert('An error occurred during upload.');
+        alert('An error occurred during the file upload.');
     }
 });
