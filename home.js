@@ -1,12 +1,11 @@
 import { auth, db } from './firebase.js';
 import { doc, setDoc, collection, addDoc, getDocs, getDoc, writeBatch, serverTimestamp, query, where, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 import { signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 let currentUserUid = null; // Global variable to store the user's UID
 
 // Listen for authentication state changes
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-
 onAuthStateChanged(auth, (user) => {
     if (user) {
         currentUserUid = user.uid;
@@ -48,6 +47,7 @@ async function createFolder() {
         console.warn("Folder name cannot be empty."); // Optional: Warn about empty folder name
     }
 }
+
 // Function to load folders and files
 function loadFolders(parentId = 0) {
     if (!currentUserUid) {
@@ -91,6 +91,7 @@ function loadFolders(parentId = 0) {
 
         foldersElement.innerHTML = folderItems.join("");
 
+
         const folderDivs = foldersElement.querySelectorAll(".folder-item");
         folderDivs.forEach((folderDiv, index) => {
             const deleteButton = folderDiv.querySelector(".delete-btn");
@@ -127,8 +128,7 @@ function loadFolders(parentId = 0) {
             const file = doc.data();
             fileItems.push(`
                 <div class="file-item">
-                    <img src="../file.png" class="file-icon" alt="File Icon">
-                    <a href="${file.url}" target="_blank" class="file-link">${file.name}</a>
+                    <a href="${file.url}" target="_blank">${file.name}</a>
                     <button class="delete-btn" data-id="${doc.id}">Delete</button>
                 </div>
             `);
@@ -136,11 +136,13 @@ function loadFolders(parentId = 0) {
 
         filesElement.innerHTML = fileItems.join("");
 
-        const deleteButtons = filesElement.querySelectorAll(".delete-btn");
-        deleteButtons.forEach((button, index) => {
+
+        const fileDivs = filesElement.querySelectorAll(".file-item");
+        fileDivs.forEach((fileDiv, index) => {
+            const deleteButton = fileDiv.querySelector(".delete-btn");
             const fileId = querySnapshot.docs[index].id;
 
-            button.addEventListener("click", async (e) => {
+            deleteButton.addEventListener("click", async (e) => {
                 e.stopPropagation();
                 try {
                     await deleteFile(fileId);
@@ -150,150 +152,24 @@ function loadFolders(parentId = 0) {
             });
         });
     });
-
-    return { unsubscribeFolders, unsubscribeFiles };
 }
 
-
-
-
-// Open folder
-function openFolder(folderId) {
-    loadFolders(folderId); // Pass the folder ID to load subfolders
-    document.getElementById('currentParentId').value = folderId; // Update the currentParentId input with the folder ID
-}
-
-// Function to delete folder from Firestore
+// Delete Folder
 async function deleteFolder(folderId) {
-    const folderDocRef = doc(db, "folders", folderId); // Get reference to the folder document
-
     try {
-        // Optionally: Check if the folder exists before deleting (avoids unnecessary errors)
-        const folderSnap = await getDoc(folderDocRef);
-        if (!folderSnap.exists()) {
-            console.warn(`Folder with ID ${folderId} does not exist.`);
-            return; // Exit if the folder doesn't exist
-        }
-
-        // Delete subfolders if any
-        const subfoldersRef = collection(db, "folders");
-        const subfoldersQuery = query(subfoldersRef, where("parent_id", "==", folderId));
-        const subfoldersSnapshot = await getDocs(subfoldersQuery);
-
-        const batch = writeBatch(db);
-        subfoldersSnapshot.forEach((subfolder) => {
-            const subfolderRef = doc(db, "folders", subfolder.id);
-            batch.delete(subfolderRef); // Add subfolder to the batch delete
-        });
-
-        batch.delete(folderDocRef); // Add the main folder to the batch delete
-        await batch.commit(); // Execute batch delete in a single network call
-
-        console.log(`Folder ${folderId} and its subfolders successfully deleted!`);
+        await deleteDoc(doc(db, "folders", folderId));
+        console.log("Folder deleted:", folderId);
     } catch (error) {
-        console.error("Error deleting folder: ", error);
-        throw error; // Re-throw the error to handle it in the caller function
+        console.error("Error deleting folder:", error);
     }
 }
 
-
-// Attach event listeners
-window.onload = function () {
-    //loadFolders(); // Load root folders on page load
-
-    // Attach event listener to the "Create Folder" button
-    const createFolderButton = document.querySelector(".add-folder .right");
-    if (createFolderButton) {
-        createFolderButton.addEventListener("click", createFolder);
-    }
-};
-
-// Add the event listener for the logout button
-document.addEventListener('DOMContentLoaded', () => {
-    const logoutButton = document.getElementById('logoutButton'); // Ensure your button has this ID
-
-    if (logoutButton) {
-        logoutButton.addEventListener('click', async () => {
-            try {
-                // Log out the user
-                await signOut(auth);
-                console.log("User logged out successfully!");
-
-                // Redirect to another HTML file
-                window.location.href = 'index.html'; // Change to the desired file
-            } catch (error) {
-                console.error("Error logging out:", error);
-            }
-        });
-    } else {
-        console.error("Logout button not found!");
-    }
-});
-
+// Delete File
 async function deleteFile(fileId) {
     try {
-        const fileRef = doc(db, "files", fileId);
-        await deleteDoc(fileRef);
-        console.log(`File with ID ${fileId} deleted successfully.`);
+        await deleteDoc(doc(db, "files", fileId));
+        console.log("File deleted:", fileId);
     } catch (error) {
         console.error("Error deleting file:", error);
     }
 }
-
-
-
-
-const fileInput = document.getElementById('fileUpload');
-
-fileInput.addEventListener('change', async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const formData = new FormData();
-    formData.append('file', file);
-
-    // Get the current user UID and parent ID
-    const currentUserUid = auth.currentUser ? auth.currentUser.uid : null;
-    const parentId = document.getElementById('currentParentId').value;
-
-    if (!currentUserUid) {
-        console.error("User is not authenticated. Cannot upload file.");
-        return;
-    }
-
-    formData.append('user_id', currentUserUid);
-    formData.append('parent_id', parentId);
-
-    try {
-        const response = await fetch('https://file-browser-redirection.onrender.com/upload', {
-            method: 'POST',
-            body: formData,
-        });
-
-        const result = await response.json();
-        if (response.ok) {
-            // Proceed with Firestore write operation to save metadata
-            const fileMetadata = {
-                name: file.name,
-                url: result.fileUrl,
-                user_id: currentUserUid,
-                parent_id: parentId,
-                created_at: serverTimestamp() // Add timestamp
-            };
-
-            // Ensure the user is authenticated before saving metadata to Firestore
-            if (currentUserUid) {
-                const fileRef = collection(db, "files");
-                await addDoc(fileRef, fileMetadata);
-                alert(`File uploaded and metadata saved successfully: ${result.fileUrl}`);
-            }
-
-        } else {
-            console.error('Upload failed:', result.message);
-            alert('File upload failed.');
-        }
-    } catch (error) {
-        console.error('Error during upload:', error);
-        alert('An error occurred during upload.');
-    }
-});

@@ -12,23 +12,24 @@ const port = 3000;
 
 // Firebase Configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyAIKjugxiJh9Bd0B32SEd4t9FImRQ9SVK8",
-    authDomain: "browser-redirection.firebaseapp.com",
-    databaseURL: "https://browser-redirection-default-rtdb.firebaseio.com",
-    projectId: "browser-redirection",
-    storageBucket: "browser-redirection.firebasestorage.app",
-    messagingSenderId: "119718481062",
-    appId: "1:119718481062:web:3f57b707f3438fc309f867",
-    measurementId: "G-RG2M2FHGWV"
+    apiKey: process.env.FIREBASE_API_KEY,
+    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+    databaseURL: process.env.FIREBASE_DATABASE_URL,
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.FIREBASE_APP_ID,
+    measurementId: process.env.FIREBASE_MEASUREMENT_ID
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
 
+// Cloudinary Configuration
 cloudinary.config({
-    cloud_name: 'dvkzio03x',  // Correct Cloudinary account
-    api_key: '944258497648494',
-    api_secret: 'mnH7wMY5-x5VAtUL_Mdu6-6t-0w',
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.CLOUD_API_KEY,
+    api_secret: process.env.CLOUD_API_SECRET,
 });
 
 // Enable CORS for all origins
