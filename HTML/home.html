@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FileHaven | Files</title>
+    <link rel="stylesheet" href="../CSS/styles.css">
+</head>
+
+<body>
+    <nav>
+        <div class="nav-left">
+            <span>FileHaven</span>
+        </div>
+        <div class="nav-right">
+            <button class="nav-item btn" id="logoutButton">Log Out</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="add-folder">
+            <div class="left"></div>
+            <input type="text" id="folderName" placeholder="Enter folder name">
+            <button class="right">Create Folder</button>
+            <button class="right" onclick="window.location.href='home.html'">Back to Root</button>
+        </div>
+        <input type="hidden" id="currentParentId" value="0">
+        <div class="folders-background">
+            <div id="folders"></div>
+            <div id="files"></div>
+        </div>
+    </div>
+
+    <div class="floating-file-btn">
+        <input type="file" id="fileUpload" multiple>
+        <label for="fileUpload">Upload</label>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js"></script>
+
+    <!-- Your script file as a module -->
+    <script type="module" src="../JAVASCRIPT/home.js"></script>
+</body>
+
+</html>

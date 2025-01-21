@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FileHaven | Sign Up</title>
+    <link rel="stylesheet" href="../CSS/styles.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-left">
+            <span>FileHaven</span>
+        </div>
+        <div class="nav-right">
+            <a href="../index.html">
+                <button class="nav-item btn">Log In</button>
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2 class="loginh2">Sign Up</h2>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="text" id="password" placeholder="Password" required>
+        <input type="text" id="confirmPassword" placeholder="Confirm Password" required>
+        <button id="signupButton" type="submit">Sign Up</button>
+        <p id="message"></p>
+    </div>
+
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <script type="module" src="../JAVASCRIPT/firebase.js"></script>
+    <script type="module" src="../JAVASCRIPT/signup.js"></script>
+</body>
+</html>
