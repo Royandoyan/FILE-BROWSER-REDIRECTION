@@ -6,15 +6,16 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Firebase Configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDv6QALxp7OqwTaS6shB4SZ1n2fmSwvM1E",
-  authDomain: "filehaven-aae7f.firebaseapp.com",
-  projectId: "filehaven-aae7f",
-  storageBucket: "filehaven-aae7f.firebasestorage.app",
-  messagingSenderId: "651173413232",
-  appId: "1:651173413232:web:4d5478f6bb5fa8427ecfb5",
-  measurementId: "G-S2KQMF1SLK"
+  apiKey: "AIzaSyAIKjugxiJh9Bd0B32SEd4t9FImRQ9SVK8",
+  authDomain: "browser-redirection.firebaseapp.com",
+  databaseURL: "https://browser-redirection-default-rtdb.firebaseio.com",
+  projectId: "browser-redirection",
+  storageBucket: "browser-redirection.firebasestorage.app",
+  messagingSenderId: "119718481062",
+  appId: "1:119718481062:web:3f57b707f3438fc309f867",
+  measurementId: "G-RG2M2FHGWV"
 };
 
 // Initialize Firebase

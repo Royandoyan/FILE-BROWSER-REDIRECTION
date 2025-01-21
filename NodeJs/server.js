@@ -21,15 +21,16 @@ const firebaseConfig = {
     appId: "1:119718481062:web:3f57b707f3438fc309f867",
     measurementId: "G-RG2M2FHGWV"
   };
+
   
   const firebaseApp = initializeApp(firebaseConfig);
   const db = getFirestore(firebaseApp);
   
   cloudinary.config({
-      cloud_name: 'dvkzio03x',  // Correct Cloudinary account
-      api_key: '944258497648494',
-      api_secret: 'mnH7wMY5-x5VAtUL_Mdu6-6t-0w',
-    });
+    cloud_name: 'dvkzio03x',  // Correct Cloudinary account
+    api_key: '944258497648494',
+    api_secret: 'mnH7wMY5-x5VAtUL_Mdu6-6t-0w',
+  });
   
   app.use(cors());
   
