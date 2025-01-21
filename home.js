@@ -154,6 +154,14 @@ function loadFolders(parentId = 0) {
     });
 }
 
+function openFolder(folderId) {
+    console.log("Opening folder with ID:", folderId);
+    // You can implement the functionality to load the contents of the clicked folder
+    // For example, you might want to pass the folderId to `loadFolders` to load its contents
+    loadFolders(folderId);  // Assuming `loadFolders` is the function to load folder contents
+}
+
+
 // Delete Folder
 async function deleteFolder(folderId) {
     try {
