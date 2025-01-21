@@ -40,7 +40,6 @@ async function createFolder() {
             });
 
             console.log("Folder created successfully!");
-            //loadFolders(parentId); // Immediately refresh the folders display inside the current folder
             document.getElementById('folderName').value = ""; // Clear the input field
         } catch (error) {
             console.error("Error creating folder:", error);
@@ -49,7 +48,6 @@ async function createFolder() {
         console.warn("Folder name cannot be empty."); // Optional: Warn about empty folder name
     }
 }
-
 // Function to load folders and files
 function loadFolders(parentId = 0) {
     if (!currentUserUid) {
@@ -245,7 +243,6 @@ async function deleteFile(fileId) {
 
 
 
-
 const fileInput = document.getElementById('fileUpload');
 
 fileInput.addEventListener('change', async (event) => {
@@ -275,7 +272,22 @@ fileInput.addEventListener('change', async (event) => {
 
         const result = await response.json();
         if (response.ok) {
-            alert(`File uploaded successfully: ${result.fileUrl}`);
+            // Proceed with Firestore write operation to save metadata
+            const fileMetadata = {
+                name: file.name,
+                url: result.fileUrl,
+                user_id: currentUserUid,
+                parent_id: parentId,
+                created_at: serverTimestamp() // Add timestamp
+            };
+
+            // Ensure the user is authenticated before saving metadata to Firestore
+            if (currentUserUid) {
+                const fileRef = collection(db, "files");
+                await addDoc(fileRef, fileMetadata);
+                alert(`File uploaded and metadata saved successfully: ${result.fileUrl}`);
+            }
+
         } else {
             console.error('Upload failed:', result.message);
             alert('File upload failed.');
