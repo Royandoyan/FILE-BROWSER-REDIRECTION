@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log("User logged out successfully!");
 
                 // Redirect to another HTML file
-                window.location.href = '../index.html'; // Change to the desired file
+                window.location.href = 'index.html'; // Change to the desired file
             } catch (error) {
                 console.error("Error logging out:", error);
             }
