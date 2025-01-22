@@ -68,11 +68,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
                     return res.status(500).json({ message: 'Error uploading to Cloudinary.', error: error.message });
                 }
 
-                // Log the Cloudinary result
-                console.log('Cloudinary upload successful:', result);
-                console.log('Metadata being sent to Firestore:', metadata);
-
-                // Store metadata in Firestore
+                // Declare metadata after Cloudinary upload succeeds
                 const metadata = {
                     name: file.originalname,
                     public_id: result.public_id,
@@ -80,11 +76,15 @@ app.post('/upload', upload.single('file'), (req, res) => {
                     parent_id: parentId === "0" ? null : parentId,
                     user_id: userId,
                     uploaded_at: new Date(),
-                  };
-                  
+                };
 
+                // Log metadata for debugging
+                console.log('Cloudinary upload successful:', result);
+                console.log('Metadata being sent to Firestore:', metadata);
+
+                // Store metadata in Firestore
+                const filesRef = collection(db, 'files');
                 try {
-                    const filesRef = collection(db, 'files');
                     await addDoc(filesRef, metadata);
                     console.log('Metadata saved to Firestore:', metadata);  // Log metadata for debugging
                     res.status(200).json({
@@ -102,6 +102,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
         res.status(500).json({ message: 'Error during upload.', error: error.message });
     }
 });
+
 
 // Root route to serve the index.html explicitly
 app.get('/', (req, res) => {
