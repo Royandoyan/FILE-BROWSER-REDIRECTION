@@ -1,171 +1,319 @@
-/* Reset default margin and padding */
+/* General Reset */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
 
-/* General page background */
 body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f4f4f9;
-  color: #333;
-  line-height: 1.6;
+    background-color: 	#383838;
 }
 
-/* Main container to center content */
+/* Font Import */
+@font-face {
+    font-family: LEMONMILK-Bold;
+    src: url(../Fonts/LEMONMILK-Bold.otf);
+}
+@font-face {
+    font-family: LEMONMILK-Light;
+    src: url(../Fonts/LEMONMILK-Light.otf);
+}
+
+/* Layout */
+.left {
+    margin-right: auto;
+}
+.right {
+    margin-left: auto;
+}
+
+/* Form Styling */
+input {
+    padding: 12px;
+    margin-bottom: 15px;
+    width: 420px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-family: Arial;
+    transition: all 0.3s ease-in-out;
+    background-color: white;
+}
+input:focus {
+    border-color: #6a7cff;
+    outline: none;
+}
+
+button {
+    background-color: #4e73df;
+    color: white;
+    font-family: LEMONMILK-Light;
+    font-size: 14px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    height: 45px;
+    width: 130px;
+    margin-top: 18px;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #2e59ff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Navigation */
+nav {
+    background-color: 	white;
+    color: rgb(23, 32, 52);
+    padding: 20px 30px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    font-family: LEMONMILK-Bold;
+    font-size: 40px;
+    color: #2e59ff;
+    font-weight: bold;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    font-family: LEMONMILK-Light;
+    font-size: 20px;
+}
+
+.nav-right a {
+    margin-left: 10px; /* Adding space between the buttons */
+}
+
+.nav-item {
+    text-decoration: none;
+    color: rgb(23, 32, 52);
+    transition: all 0.3s ease;
+}
+
+.nav-item:hover {
+    color: #2e59ff;
+    font-weight: bold;
+}
+
+.nav-item.current {
+    font-family: LEMONMILK-Bold;
+}
+
+.nav-item.btn {
+    width: 100px;
+    color: #ffffff;
+    background-color: #4e73df;
+    padding: 10px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+/* Containers */
 .container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px;
-  text-align: center;
-}
-
-/* Header with logo and navigation */
-header {
-  background-color: #24292f;
-  padding: 20px 0;
-  color: #fff;
-}
-
-header .logo {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #4caf50;
-}
-
-nav ul {
-  display: flex;
-  justify-content: center;
-  list-style: none;
-  margin-top: 10px;
-}
-
-nav ul li {
-  margin: 0 15px;
-}
-
-nav ul li a {
-  text-decoration: none;
-  color: #fff;
-  font-size: 1.1rem;
-  transition: color 0.3s ease;
-}
-
-nav ul li a:hover {
-  color: #4caf50;
-}
-
-/* Form Styles */
-form {
-  background-color: #ffffff;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
-  margin: 40px auto;
-  text-align: left;
-}
-
-form input,
-form button {
-  width: 100%;
-  padding: 15px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 1rem;
-}
-
-form input:focus {
-  border-color: #4caf50;
-  outline: none;
-}
-
-form button {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-size: 1.2rem;
-}
-
-form button:hover {
-  background-color: #45a049;
-}
-
-form .password-wrapper {
-  display: flex;
-  align-items: center;
-  position: relative;
-}
-
-form .password-wrapper input {
-  flex-grow: 1;
-}
-
-form .password-wrapper .toggle-password {
-  position: absolute;
-  right: 10px;
-  cursor: pointer;
-  font-size: 1.2rem;
-  color: #888;
-}
-
-/* Signup Button and Error Message */
-.message-container {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.message-text {
-  font-size: 1rem;
-  color: #d32f2f;
-}
-
-.message-text.success {
-  color: #4caf50;
-}
-
-.message-text.error {
-  color: #d32f2f;
-}
-
-/* Input Error Message Styling */
-input.error {
-  border-color: #e74c3c;
-}
-
-input.error:focus {
-  border-color: #c0392b;
-}
-
-/* Mobile Responsiveness */
-@media screen and (max-width: 768px) {
-  header {
-    padding: 15px;
-  }
-
-  nav ul {
+    width: 100%;
+    background-color: #505050;
+    display: flex;
     flex-direction: column;
-  }
+    align-items: center;
+    padding: 30px;
+    justify-content: center;
+    border: white;
+    border-radius: 10px;
+}
 
-  form {
+form {
+    background-color: #505050;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container #folders {
+    align-self: flex-start;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.folders-background {
+    background-color: #232b3c;
+    border-radius: 12px;
+    width: 80%;
+    height: 70%;
+    overflow-y: auto;
+    padding: 15px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Typography */
+.title {
+    font-family: LEMONMILK-Bold;
+    font-size: 42px;
+    color: rgb(23, 32, 52);
+    margin-bottom: 20px;
+}
+
+.loginh2, h2 {
+    font-family: LEMONMILK-Light;
+    font-size: 22px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: wheat;
+    background-color: #505050;
+}
+
+.loginh2 {
+    margin-top: 60px;
+}
+
+.description, p {
+    font-family: LEMONMILK-Light;
+    font-size: 12px;
+    color: rgb(23, 32, 52);
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Password Wrapper */
+.password-wrapper {
+    position: relative;
+    width: 420px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0px;
+    
+}
+
+.password-wrapper input {
+    padding-right: 40px;
+    border: 1px solid #ddd;
+    background-color: white;
+}
+
+.eye-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    bottom: 8px;
+    width: 40px;
+    font-size: 18px;
+    background-color: white;
+    
+}
+
+/* Loading Indicator */
+#loading {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    z-index: 1000;
+    display: none;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Folder and File Items */
+.folder-icon, .file-icon {
+    width: 22px;
+    height: 22px;
+    margin-right: 12px;
+    background-color: w;
+}
+
+.folder-item, .file-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    position: relative;
+    justify-content: space-between;
+    max-height: 60px;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.folder-item:hover, .file-item:hover {
+    background-color: #e7e7e7;
+}
+
+.folder-item::after, .file-item::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 90%;
-    margin: 20px auto;
-  }
+    border-bottom: 1px solid #ddd;
 }
 
-/* Footer Styling */
-footer {
-  background-color: #24292f;
-  color: #fff;
-  text-align: center;
-  padding: 20px 0;
-  margin-top: 40px;
+.folder-text, .file-link {
+    flex-grow: 1;
+    color: #333;
 }
 
-footer p {
-  font-size: 1rem;
+.delete-btn, .upload-btn {
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+}
+
+.delete-btn:hover, .upload-btn:hover {
+    color: darkred;
+}
+
+/* Notifications */
+.notification-button {
+    font-size: 18px;
+    color: #4e73df;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-top: 20px;
+}
+
+.notification-button:hover {
+    color: #2e59ff;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+
+    .password-wrapper input {
+        width: 100%;
+    }
+
+    .nav-left, .nav-right {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .nav-right {
+        margin-top: 10px;
+    }
 }
