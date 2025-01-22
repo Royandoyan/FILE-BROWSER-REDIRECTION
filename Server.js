@@ -52,6 +52,9 @@ app.post('/upload', upload.single('file'), (req, res) => {
             return res.status(400).json({ message: 'No file uploaded.' });
         }
 
+        // Log the received data for debugging
+        console.log('Received file and metadata:', { userId, parentId });
+
         // Extract the file extension
         const fileExtension = file.originalname.split('.').pop();
         const publicId = `${uuidv4()}.${fileExtension}`;
@@ -61,9 +64,13 @@ app.post('/upload', upload.single('file'), (req, res) => {
             { resource_type: 'auto', public_id: publicId },
             async (error, result) => {
                 if (error) {
-                    console.error('Cloudinary error:', error);
-                    return res.status(500).json({ message: 'Error uploading to Cloudinary.' });
+                    console.error('Cloudinary upload error:', error);
+                    return res.status(500).json({ message: 'Error uploading to Cloudinary.', error: error.message });
                 }
+
+                // Log the Cloudinary result
+                console.log('Cloudinary upload successful:', result);
+                console.log('Metadata being sent to Firestore:', metadata);
 
                 // Store metadata in Firestore
                 const metadata = {
@@ -73,24 +80,26 @@ app.post('/upload', upload.single('file'), (req, res) => {
                     parent_id: parentId === "0" ? null : parentId,
                     user_id: userId,
                     uploaded_at: new Date(),
-                };
+                  };
+                  
 
                 try {
                     const filesRef = collection(db, 'files');
                     await addDoc(filesRef, metadata);
+                    console.log('Metadata saved to Firestore:', metadata);  // Log metadata for debugging
                     res.status(200).json({
                         message: 'File uploaded and metadata stored.',
                         fileUrl: result.secure_url,
                     });
                 } catch (dbError) {
                     console.error('Firestore error:', dbError);
-                    res.status(500).json({ message: 'Error saving metadata to Firestore.' });
+                    res.status(500).json({ message: 'Error saving metadata to Firestore.', error: dbError.message });
                 }
             }
         ).end(file.buffer); // Pass the file buffer to the uploader
     } catch (error) {
-        console.error('Error during upload:', error); // Log the error
-        res.status(500).json({ message: 'Error during upload.', error: error.message }); // Send JSON error
+        console.error('Error during file upload:', error);  // Log the error
+        res.status(500).json({ message: 'Error during upload.', error: error.message });
     }
 });
 
