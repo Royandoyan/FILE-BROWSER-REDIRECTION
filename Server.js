@@ -80,7 +80,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
                 // Log metadata for debugging
                 console.log('Cloudinary upload successful:', result);
-                console.log('Metadata being sent to Firestore:', metadata);
+                
 
                 // Store metadata in Firestore
                 const filesRef = collection(db, 'files');
